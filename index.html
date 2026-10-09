@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#1457c5">
+  <title>দক্ষ হাত</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">দ</div>
+    <div class="brand-copy"><strong>দক্ষ হাত</strong><small>সেবা খুঁজুন, সহজে</small></div>
+    <button class="icon-btn" aria-label="নোটিফিকেশন" onclick="toast('নোটিফিকেশন পরে যুক্ত হবে')">♧</button>
+    <button class="icon-btn" aria-label="মেনু" onclick="showPage('account')">⋮</button>
+  </header>
+
+  <main id="app-main">
+    <section class="page active" id="page-home">
+      <div class="hero">
+        <div class="hero-image" id="heroImage"></div>
+        <div class="hero-shade"></div>
+        <div class="hero-copy">
+          <span class="eyebrow">আপনার এলাকার দক্ষ কর্মী</span>
+          <h1 id="heroTitle">বিশ্বস্ত মিস্ত্রি খুঁজুন</h1>
+          <p id="heroSubtitle">বাড়ি ও ব্যবসার কাজের জন্য সঠিক মানুষটি</p>
+          <button class="primary-btn" onclick="showPage('search')">মিস্ত্রি খুঁজুন <span>→</span></button>
+        </div>
+        <div class="dots" id="heroDots"><i class="selected"></i><i></i><i></i><i></i></div>
+      </div>
+
+      <div class="section-heading"><div><h2>কোন সেবা প্রয়োজন?</h2><p>কাজের ধরন বেছে নিন</p></div><button class="text-btn" onclick="showPage('search')">সব দেখুন</button></div>
+      <div class="category-grid" id="categoryGrid"></div>
+
+      <div class="section-heading"><div><h2>জনপ্রিয় মিস্ত্রি</h2><p>ডেমো প্রোফাইল — বাস্তব যাচাইকৃত তালিকা নয়</p></div><button class="text-btn" onclick="showPage('search')">আরও →</button></div>
+      <div class="worker-list" id="homeWorkers"></div>
+
+      <div class="market-promo">
+        <div><span class="eyebrow">শিগগিরই</span><h2>পণ্য কিনুন ও বিক্রি করুন</h2><p>বিভিন্ন বিক্রেতার পণ্য এক জায়গায়</p><button class="light-btn" onclick="showPage('market')">মার্কেটপ্লেস দেখুন</button></div>
+        <div class="promo-icon">🛍️</div>
+      </div>
+    </section>
+
+    <section class="page" id="page-search">
+      <div class="page-title"><h1>মিস্ত্রি খুঁজুন</h1><p>কাজ ও এলাকা দিয়ে খুঁজুন</p></div>
+      <label class="field-label" for="workerSearch">কাজ বা মিস্ত্রির নাম</label>
+      <input id="workerSearch" class="field" placeholder="যেমন: ইলেকট্রিশিয়ান" oninput="renderWorkers()">
+      <label class="field-label" for="areaSearch">এলাকা</label>
+      <input id="areaSearch" class="field" placeholder="যেমন: মিরপুর, ঢাকা" oninput="renderWorkers()">
+      <div class="chips" id="searchChips"></div>
+      <div class="section-heading"><div><h2>মিস্ত্রির তালিকা</h2><p id="resultCount">ডেমো তালিকা</p></div></div>
+      <div class="worker-list" id="searchWorkers"></div>
+    </section>
+
+    <section class="page" id="page-messages">
+      <div class="page-title"><h1>মেসেজ</h1><p>আপনার কথোপকথন</p></div>
+      <div class="notice">এটি স্থানীয় ডেমো। অন্য ব্যবহারকারীর কাছে আসল মেসেজ যায় না।</div>
+      <div class="conversation" onclick="openChat('রহিম মিয়া')"><div class="avatar">র</div><div class="conversation-text"><strong>রহিম মিয়া</strong><p>কাজের সময় নিয়ে কথা বলুন</p></div><span class="chevron">›</span></div>
+      <div class="conversation" onclick="openChat('সুমন ইলেকট্রিক')"><div class="avatar orange">স</div><div class="conversation-text"><strong>সুমন ইলেকট্রিক</strong><p>আপনার প্রশ্ন এখানে লিখুন</p></div><span class="chevron">›</span></div>
+    </section>
+
+    <section class="page" id="page-chat">
+      <button class="back-btn" onclick="showPage('messages')">← মেসেজে ফিরুন</button>
+      <div class="page-title"><h1 id="chatTitle">কথোপকথন</h1><p>স্থানীয় ডেমো চ্যাট</p></div>
+      <div id="chatMessages" class="chat-messages"><div class="bubble received">আসসালামু আলাইকুম! কী কাজ করাতে চান?</div></div>
+      <form class="chat-compose" onsubmit="sendMessage(event)"><input id="chatInput" class="field" placeholder="মেসেজ লিখুন..." autocomplete="off"><button class="send-btn" type="submit">➤</button></form>
+    </section>
+
+    <section class="page" id="page-market">
+      <div class="page-title"><span class="eyebrow">দক্ষ হাত মার্কেটপ্লেস</span><h1>পণ্য কিনুন</h1><p>বিভিন্ন বিক্রেতার পণ্য এক জায়গায়</p></div>
+      <input class="field" id="productSearch" placeholder="পণ্য খুঁজুন..." oninput="renderProducts()">
+      <div class="market-notice">প্রাথমিক ডেমো: অর্ডার ও পেমেন্ট এখনো চালু নয়।</div>
+      <div class="product-grid" id="productGrid"></div>
+      <div class="seller-box"><div><h2>আপনি কি বিক্রেতা?</h2><p>পণ্য যোগ করে দোকান শুরু করুন</p></div><button class="primary-btn" onclick="showPage('seller')">পণ্য যোগ করুন +</button></div>
+    </section>
+
+    <section class="page" id="page-seller">
+      <button class="back-btn" onclick="showPage('market')">← পণ্যে ফিরুন</button>
+      <div class="page-title"><h1>পণ্য যোগ করুন</h1><p>বিক্রেতার ডেমো ফর্ম</p></div>
+      <form id="sellerForm" class="form-card" onsubmit="addProduct(event)">
+        <label class="field-label">পণ্যের নাম *</label><input class="field" id="productName" required placeholder="পণ্যের নাম">
+        <label class="field-label">দাম (৳) *</label><input class="field" id="productPrice" required type="number" min="1" placeholder="যেমন 500">
+        <label class="field-label">ক্যাটাগরি</label><select class="field" id="productCategory"><option>হস্তশিল্প</option><option>পোশাক</option><option>ঘর ও নির্মাণ</option><option>কৃষিপণ্য</option><option>অন্যান্য</option></select>
+        <label class="field-label">বিবরণ</label><textarea class="field" id="productDescription" rows="3" placeholder="পণ্যের বিবরণ লিখুন"></textarea>
+        <button class="primary-btn full-btn" type="submit">ডেমো পণ্য প্রকাশ করুন</button>
+        <p class="small-note">এই ডেমোতে পণ্য অনলাইনে প্রকাশিত হয় না; অ্যাপের চলতি সেশনে দেখা যাবে।</p>
+      </form>
+    </section>
+
+    <section class="page" id="page-account">
+      <div class="page-title"><h1>আমার অ্যাকাউন্ট</h1><p>দক্ষ হাত ব্যবহার করুন</p></div>
+      <div class="account-card"><div class="account-avatar">দ</div><h2>স্বাগতম</h2><p>লগইন ও নিরাপদ অ্যাকাউন্ট ব্যবস্থা পরে backend-এর সঙ্গে যুক্ত হবে।</p></div>
+      <button class="menu-row" onclick="toast('আমাদের সম্পর্কে পৃষ্ঠা পরে যোগ হবে')">ℹ️ <span>আমাদের সম্পর্কে</span><b>›</b></button>
+      <button class="menu-row" onclick="toast('সহায়তা ব্যবস্থা পরে যুক্ত হবে')">🎧 <span>সহায়তা ও অভিযোগ</span><b>›</b></button>
+      <button class="menu-row" onclick="toast('নীতিমালা প্রকাশের আগে যোগ করতে হবে')">🛡️ <span>গোপনীয়তা ও নিরাপত্তা</span><b>›</b></button>
+      <div class="notice">নিরাপত্তার জন্য এই ডেমোতে জাতীয় পরিচয়পত্র বা সংবেদনশীল তথ্য দেবেন না।</div>
+    </section>
+
+    <section class="page" id="page-worker">
+      <button class="back-btn" onclick="showPage('search')">← তালিকায় ফিরুন</button>
+      <div id="workerDetail"></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-page="home" onclick="showPage('home')"><span>⌂</span><small>হোম</small></button>
+    <button class="nav-item" data-page="search" onclick="showPage('search')"><span>⌕</span><small>মিস্ত্রি</small></button>
+    <button class="nav-item" data-page="market" onclick="showPage('market')"><span>▣</span><small>পণ্য</small></button>
+    <button class="nav-item" data-page="messages" onclick="showPage('messages')"><span>▤</span><small>মেসেজ</small></button>
+    <button class="nav-item" data-page="account" onclick="showPage('account')"><span>♙</span><small>প্রোফাইল</small></button>
+  </nav>
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
